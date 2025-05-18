@@ -18,5 +18,6 @@ public class Fingerprint {
     @Column(unique = true)
     private String visitorId;
 
+    @Column(name = "hash_components", columnDefinition = "MEDIUMTEXT")
     private String hashComponents; // полный JSON отпечатка
 }

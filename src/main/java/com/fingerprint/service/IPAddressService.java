@@ -3,11 +3,13 @@ package com.fingerprint.service;
 import com.fingerprint.entity.IPAddress;
 import com.fingerprint.entity.User;
 import com.fingerprint.repository.IPAddressRepository;
+import com.fingerprint.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,19 +17,25 @@ import java.util.Optional;
 public class IPAddressService {
     private final IPAddressRepository ipAddressRepository;
     private final RestTemplate restTemplate = new RestTemplate();
+    private final UserRepository userRepository;
 
-    public void saveOrUpdateIP(User user, String ip) {
-        Optional<IPAddress> optionalIP = user.getIpAddresses()
-                .stream()
-                .filter(i -> i.getIp().equals(ip))
-                .findFirst();
+    public IPAddress saveOrUpdateIP(User user, String ip) {
+        List<IPAddress> ipAddresses = user.getIpAddresses();
+        Optional<IPAddress> optionalIP = Optional.empty();
+
+        if (ipAddresses != null) {
+            optionalIP = ipAddresses.stream()
+                    .filter(i -> i.getIp().equals(ip))
+                    .findFirst();
+        }
 
         if (optionalIP.isPresent()) {
             IPAddress ipAddress = optionalIP.get();
             ipAddress.setLastSeen(LocalDateTime.now());
             ipAddressRepository.save(ipAddress);
+            return ipAddress;
         } else {
-            String apiUrl = "http://ip-api.com/json/" + ip + "?fields=status,country,city";
+            String apiUrl = "http://ip-api.com/json/" + "ip" + "?fields=status,country,city";
             IPApiResponse response = restTemplate.getForObject(apiUrl, IPApiResponse.class);
 
             IPAddress ipAddress = new IPAddress();
@@ -42,8 +50,10 @@ public class IPAddressService {
             }
 
             ipAddressRepository.save(ipAddress);
+            return ipAddress;
         }
     }
+
 
     // Вспомогательный класс для ответа от IP-API
     private static class IPApiResponse {

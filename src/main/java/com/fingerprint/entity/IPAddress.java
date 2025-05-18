@@ -26,4 +26,5 @@ public class IPAddress {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
 }

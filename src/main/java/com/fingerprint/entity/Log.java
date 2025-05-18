@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -29,4 +30,8 @@ public class Log {
     @ManyToOne
     @JoinColumn(name = "website_id")
     private Website website;
+
+    @ManyToOne
+    @JoinColumn(name = "ip_id")
+    private IPAddress ipAddress;
 }

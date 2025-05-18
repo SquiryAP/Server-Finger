@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "users")
@@ -29,12 +30,13 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @Column(name = "last_known_ip")
-    private String lastKnownIp;
 
     @Column(name = "email")
     private String email;
 
     @Column(name = "password")
     private String password;
+
+
+
 }

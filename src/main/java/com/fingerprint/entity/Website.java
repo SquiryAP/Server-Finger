@@ -16,5 +16,4 @@ public class Website {
     private Long id;
 
     private String domain;
-    private String ip;
 }

@@ -1,5 +1,6 @@
 package com.fingerprint.service;
 
+import com.fingerprint.entity.IPAddress;
 import com.fingerprint.entity.Log;
 import com.fingerprint.entity.User;
 import com.fingerprint.entity.Website;
@@ -14,12 +15,13 @@ import java.time.LocalDateTime;
 public class LogService {
     private final LogRepository logRepository;
 
-    public void saveLog(User user, Website website, Long timeSpentSeconds) {
+    public void saveLog(User user, Website website, Long timeSpentSeconds, IPAddress ipAddress) {
         Log log = new Log();
         log.setUser(user);
         log.setWebsite(website);
         log.setVisitTime(LocalDateTime.now());
         log.setTimeSpentSeconds(timeSpentSeconds);
+        log.setIpAddress(ipAddress);
         logRepository.save(log);
     }
 }
